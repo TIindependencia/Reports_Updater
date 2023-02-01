@@ -4,7 +4,7 @@ import numpy as np
 from Google import create_service
 
 ##conexión a BD
-DRIVER_NAME ='SQL SERVER'
+DRIVER_NAME ='ODBC Driver 17 for SQL Server'
 SERVER_NAME = '192.168.50.201'
 DATABASE_NAME = 'pv'
 UID='consultapluto'
