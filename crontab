@@ -1,2 +1,3 @@
 #run python script every minutes
 0 */12 * * * /usr/local/bin/python /app/BDINFORMEENVENTOSALUMAULE.py
+0 */12 * * * /usr/local/bin/python /app/BDPostVenta.py

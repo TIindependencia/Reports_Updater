@@ -4,11 +4,11 @@ import numpy as np
 from Google import create_service
 
 ##conexión a BD
-DRIVER_NAME ='ODBC Driver 17 for SQL Server'
-SERVER_NAME = '192.168.50.201'
+DRIVER_NAME = 'ODBC Driver 17 for SQL Server'
+SERVER_NAME = '192.168.1.31,1433'
 DATABASE_NAME = 'pv'
-UID='consultapluto'
-PWD='_pepe@2015'; 
+UID='google'
+PWD='Pago1010.'; 
 
 
 
@@ -58,7 +58,7 @@ response = service.spreadsheets().values().get(
     range='BD!A2:M'
     ).execute()
 
-
+print(data_PV)
 recordset = data_PV.values.tolist()
 
 """
