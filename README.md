@@ -4,5 +4,5 @@
 
 2.Docker Run: docker run -it -d reports_updater_container
 
-3.Docker Exec: docker exec container_id /bin/sh
+3.Docker Exec: docker exec -it container_id /bin/sh
 
