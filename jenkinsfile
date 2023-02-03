@@ -10,12 +10,12 @@ pipeline{
 
         stage('build-Alumaule'){
             steps{
-                sh 'python3 BDINFORMEENVENTOSALUMAULE.py'
+                sh 'python BDINFORMEENVENTOSALUMAULE.py'
             }
         }
         stage('build-BDPostVenta'){
             steps{
-                sh 'python3 BDPostVenta.py'
+                sh 'python BDPostVenta.py'
             }
         }
     }
