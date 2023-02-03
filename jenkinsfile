@@ -8,7 +8,7 @@ pipeline{
             }
         }
 
-        stage('checkoutwithpushs'){
+        stage('checkoutwithpush'){
             steps{
                 checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/TIindependencia/Reports_Updater']])
             }
