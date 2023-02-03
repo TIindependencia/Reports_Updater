@@ -8,7 +8,7 @@ pipeline{
             }
         }
     }
-        stages{
+        stage{
         stage('checkout2'){
             steps{
                 checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/TIindependencia/Reports_Updater']])
