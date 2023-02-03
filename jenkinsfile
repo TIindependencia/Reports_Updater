@@ -10,7 +10,7 @@ pipeline{
 
         stage('build-Alumaule'){
             steps{
-                sh 'python3 BDINFORMEENVENTOSALUMAULE.py'
+                sh '/usr/local/bin/python /app/BDINFORMEENVENTOSALUMAULE.py'
             }
         }
         stage('build-BDPostVenta'){
