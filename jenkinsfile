@@ -11,13 +11,13 @@ pipeline{
         stage('build-Alumaule'){
             steps{
                 git branch: 'main',url: 'https://github.com/TIindependencia/Reports_Updater'
-                sh 'python3 BDINFORMEENVENTOSALUMAULE.py'
+                sh 'python BDINFORMEENVENTOSALUMAULE.py'
             }
         }
         stage('build-BDPostVenta'){
             steps{
                 git branch: 'main',url: 'https://github.com/TIindependencia/Reports_Updater'
-                sh 'python3 BDPostVenta.py'
+                sh 'python BDPostVenta.py'
             }
         }
     }
