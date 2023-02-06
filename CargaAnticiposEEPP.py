@@ -43,6 +43,7 @@ cursor.execute("SELECT CtoEmpresa, NombreEmpresa, Ctocodigo, NombreCCosto, RutCo
                  + "AnticipoContabilizado, AnticipoLiquidado FROM IndAnticiposEEPP")
 Historico=cursor.fetchall()
 Historico=pd.DataFrame(np.array(Historico))
+Historico[10]=Historico[10].astype(str)
 
 cursor.execute("SELECT TOP (100) PERCENT dbo.INDEPContratoCAB.CtoEmpresa as CodEmpresa,  dbo.maeEmpresa.empNombre as NombreEmpresa,dbo.INDEPContratoCAB.CtoCodigo "
                  + "as CodCentroCosto,dbo.INDMaeUNegocioActivas.CtoDescripcion as NombreCentroCosto,  dbo.INDEPContratoCAB.RutContratista, dbo.INDTrContratistas.RazonSocial, "
@@ -83,8 +84,6 @@ service = create_service(CLIENT_SECRET_FILE, API_NAME, API_VERSION,SCOPES )
 
 google_sheets_id = '1uHsiEECIZlC6MYCrI3nPQCvqQMmGw_05O-79oPseBOo'
 
-
-#inserta ComprasDescto
 def construct_request_body(value_array, dimension: str='ROWS') -> dict:
     try:
         request_body = {
@@ -96,156 +95,33 @@ def construct_request_body(value_array, dimension: str='ROWS') -> dict:
         print(e)
         return {}
 
-response = service.spreadsheets().values().get(
-    spreadsheetId=google_sheets_id,
-    majorDimension='ROWS',
-    range='Compras con Descto!A2:D'
-    ).execute()
-recordset = ComprasDescto.values.tolist()
-"""
-Insert rows
-"""
-request_body_values = construct_request_body(recordset)
-service.spreadsheets().values().clear(spreadsheetId=google_sheets_id, range='Compras con Descto!A2:D').execute()
-service.spreadsheets().values().update(
-    spreadsheetId=google_sheets_id,
-    valueInputOption='USER_ENTERED',
-    range='Compras con Descto!A2:D',
-    body=request_body_values
-    ).execute()
+def upload_data(data,sheetname):
+    recordset = data.values.tolist()
+    """
+    Insert rows
+    """
+    request_body_values = construct_request_body(recordset)
+    service.spreadsheets().values().clear(spreadsheetId=google_sheets_id, range=sheetname).execute()
+    service.spreadsheets().values().update(
+        spreadsheetId=google_sheets_id,
+        valueInputOption='USER_ENTERED',
+        range=sheetname,
+        body=request_body_values
+        ).execute()
 
-print('ComprasDescto insertado completo')
+    print(sheetname+' insertado completo')
 
-#inserta Anticipo
-
-def construct_request_body(value_array, dimension: str='ROWS') -> dict:
-    try:
-        request_body = {
-            'majorDimension': dimension,
-            'values': value_array
-        }
-        return request_body
-    except Exception as e:
-        print(e)
-        return {}
-
-response = service.spreadsheets().values().get(
-    spreadsheetId=google_sheets_id,
-    majorDimension='ROWS',
-    range='Anticipo de Contrato!A2:D'
-    ).execute()
-recordset = Anticipo.values.tolist()
-"""
-Insert rows
-"""
-request_body_values = construct_request_body(recordset)
-service.spreadsheets().values().clear(spreadsheetId=google_sheets_id, range='Anticipo de Contrato!A2:D').execute()
-service.spreadsheets().values().update(
-    spreadsheetId=google_sheets_id,
-    valueInputOption='USER_ENTERED',
-    range='Anticipo de Contrato!A2:D',
-    body=request_body_values
-    ).execute()
-
-print('Anticipo insertado completo')
-
-#inserta Historico
-
-def construct_request_body(value_array, dimension: str='ROWS') -> dict:
-    try:
-        request_body = {
-            'majorDimension': dimension,
-            'values': value_array
-        }
-        return request_body
-    except Exception as e:
-        print(e)
-        return {}
-
-response = service.spreadsheets().values().get(
-    spreadsheetId=google_sheets_id,
-    majorDimension='ROWS',
-    range='HISTORICO!A2:O'
-    ).execute()
-Historico[10]=Historico[10].astype(str)
-recordset = Historico.values.tolist()
-"""
-Insert rows
-"""
-request_body_values = construct_request_body(recordset)
-service.spreadsheets().values().clear(spreadsheetId=google_sheets_id, range='HISTORICO!A2:O').execute()
-service.spreadsheets().values().update(
-    spreadsheetId=google_sheets_id,
-    valueInputOption='USER_ENTERED',
-    range='HISTORICO!A2:O',
-    body=request_body_values
-    ).execute()
-
-print('Historico insertado completo')
-
-#inserta BDoriginal
-
-def construct_request_body(value_array, dimension: str='ROWS') -> dict:
-    try:
-        request_body = {
-            'majorDimension': dimension,
-            'values': value_array
-        }
-        return request_body
-    except Exception as e:
-        print(e)
-        return {}
-
-response = service.spreadsheets().values().get(
-    spreadsheetId=google_sheets_id,
-    majorDimension='ROWS',
-    range='b2'
-    ).execute()
-recordset = BDoriginal.values.tolist()
-"""
-Insert rows
-"""
-request_body_values = construct_request_body(recordset)
-service.spreadsheets().values().clear(spreadsheetId=google_sheets_id, range='b2').execute()
-service.spreadsheets().values().update(
-    spreadsheetId=google_sheets_id,
-    valueInputOption='USER_ENTERED',
-    range='b2',
-    body=request_body_values
-    ).execute()
-
-print('BDoriginal insertado completo')
-
-#inserta retenciones
-
-def construct_request_body(value_array, dimension: str='ROWS') -> dict:
-    try:
-        request_body = {
-            'majorDimension': dimension,
-            'values': value_array
-        }
-        return request_body
-    except Exception as e:
-        print(e)
-        return {}
-
-response = service.spreadsheets().values().get(
-    spreadsheetId=google_sheets_id,
-    majorDimension='ROWS',
-    range='BD!A2:Q'
-    ).execute()
-recordset = Retencion.values.tolist()
-"""
-Insert rows
-"""
-request_body_values = construct_request_body(recordset)
-service.spreadsheets().values().clear(spreadsheetId=google_sheets_id, range='BD!A2:Q').execute()
-service.spreadsheets().values().update(
-    spreadsheetId=google_sheets_id,
-    valueInputOption='USER_ENTERED',
-    range='BD!A2:Q',
-    body=request_body_values
-    ).execute()
-
-print('Retenciones insertado completo')
-cursor.close()
+try:
+    #inserta ComprasDescto
+    upload_data(ComprasDescto,'Compras con Descto!A2:D')
+    #inserta Anticipo
+    upload_data(Anticipo,'Anticipo de Contrato!A2:D')
+    #inserta Historico
+    upload_data(Historico,'HISTORICO!A2:O')
+    #inserta BDoriginal
+    upload_data(BDoriginal,'b2')
+    #inserta retenciones
+    upload_data(Retencion,'BD!A2:Q')
+    cursor.close()
+except Exception as e:
+  print(e)
