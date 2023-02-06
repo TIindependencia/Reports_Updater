@@ -2,6 +2,9 @@ import pyodbc
 import pandas as pd
 import numpy as np
 from Google import create_service
+from datetime import datetime
+import pytz
+
 
 ##conexión a BD
 DRIVER_NAME = 'ODBC Driver 17 for SQL Server'
@@ -28,7 +31,6 @@ data=cursor.fetchall()
 data_PV=pd.DataFrame(np.array(data)) 
 data_PV.pop(data_PV.columns[-1])
 data_PV.pop(data_PV.columns[-1])
-print(data_PV)
 """
 Getting  Google Sheets
 """
@@ -58,7 +60,7 @@ response = service.spreadsheets().values().get(
     range='BD!A2:M'
     ).execute()
 
-print(data_PV)
+print(datetime.utcnow().replace(tzinfo=pytz.utc))
 recordset = data_PV.values.tolist()
 
 """

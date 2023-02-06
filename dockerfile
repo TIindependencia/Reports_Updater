@@ -31,7 +31,6 @@ WORKDIR /app
 # setup cron job
 COPY crontab /etc/cron.d/crontab
 RUN chmod 0644 /etc/cron.d/crontab 
-# chmod 0644 da permisos
 RUN /usr/bin/crontab /etc/cron.d/crontab
 
 # setup for python app
