@@ -1,7 +1,5 @@
 FROM --platform=linux/amd64 python:3.9.10-buster
 
-RUN apt-get update && apt-get -y install cron vim 
-
 # Install pyodbc dependencies
 RUN apt-get update
 RUN apt-get install -y build-essential libssl-dev libffi-dev python3-dev tdsodbc g++ unixodbc-dev
@@ -28,13 +26,7 @@ RUN pip install --no-cache-dir -r /requirements.txt
 
 WORKDIR /app
 
-# setup cron job
-COPY crontab /etc/cron.d/crontab
-RUN chmod 0644 /etc/cron.d/crontab 
-RUN /usr/bin/crontab /etc/cron.d/crontab
 
 # setup for python app
 COPY . /app
 
-# run
-CMD ["cron", "-f"]
