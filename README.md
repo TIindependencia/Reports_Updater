@@ -7,9 +7,12 @@
 3.Docker Exec: docker exec -it reports_updater_container /bin/sh
 
 4.Configurar Crontab: 
-              1.- crontab -e
+    crontab -e
               
-              2.- 0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/BDINFORMEENVENTOSALUMAULE.py  >> /home/independencia/Escritorio/Reports_Updater/log/Alumaule.log 2>&1
+    0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/BDINFORMEENVENTOSALUMAULE.py  >> /home/independencia/Escritorio/Reports_Updater/log/Alumaule.log 2>&1
+    0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/BDPostVenta.py  >> /home/independencia/Escritorio/Reports_Updater/log/Postventa.log 2>&1
+    0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/CargaAnticiposEEPP.py  >> /home/independencia/Escritorio/Reports_Updater/log/AnticipoEEPP.log 2>&1
+
 
 
 
