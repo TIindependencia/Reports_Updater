@@ -2,6 +2,8 @@ import pyodbc
 import pandas as pd
 import numpy as np
 from Google import create_service
+from datetime import datetime
+from pytz import timezone
 
 ##conexión a BD
 DRIVER_NAME = 'ODBC Driver 17 for SQL Server'
@@ -73,6 +75,10 @@ service.spreadsheets().values().update(
     range='SABANA!A2:V',
     body=request_body_values
     ).execute()
+
+now_utc = datetime.now(timezone('UTC'))
+now = now_utc.astimezone(timezone('America/Santiago'))
+print(now)
 
 print('Task is complete')
 

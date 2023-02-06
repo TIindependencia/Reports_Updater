@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from Google import create_service
 from datetime import datetime
-import pytz
+from pytz import timezone
 
 
 ##conexión a BD
@@ -60,7 +60,9 @@ response = service.spreadsheets().values().get(
     range='BD!A2:M'
     ).execute()
 
-print(datetime.utcnow().replace(tzinfo=pytz.utc))
+now_utc = datetime.now(timezone('UTC'))
+now = now_utc.astimezone(timezone('America/Santiago'))
+print(now)
 recordset = data_PV.values.tolist()
 
 """

@@ -2,6 +2,8 @@ import pyodbc
 import pandas as pd
 import numpy as np
 from Google import create_service
+from datetime import datetime
+from pytz import timezone
 
 ##conexión a BD
 DRIVER_NAME = 'ODBC Driver 17 for SQL Server'
@@ -109,7 +111,6 @@ def upload_data(data,sheetname):
         body=request_body_values
         ).execute()
 
-    print(sheetname+' insertado completo')
 
 try:
     #inserta ComprasDescto
@@ -123,5 +124,8 @@ try:
     #inserta retenciones
     upload_data(Retencion,'BD!A2:Q')
     cursor.close()
+    now_utc = datetime.now(timezone('UTC'))
+    now = now_utc.astimezone(timezone('America/Santiago'))
+    print(now)
 except Exception as e:
   print(e)
