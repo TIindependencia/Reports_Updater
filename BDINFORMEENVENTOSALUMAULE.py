@@ -54,11 +54,6 @@ def construct_request_body(value_array, dimension: str='ROWS') -> dict:
         print(e)
         return {}
 
-response = service.spreadsheets().values().get(
-    spreadsheetId=google_sheets_id,
-    majorDimension='ROWS',
-    range='BD!A2:M'
-    ).execute()
 
 now_utc = datetime.now(timezone('UTC'))
 now = now_utc.astimezone(timezone('America/Santiago'))

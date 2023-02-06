@@ -52,11 +52,6 @@ def construct_request_body(value_array, dimension: str='ROWS') -> dict:
         print(e)
         return {}
 
-response = service.spreadsheets().values().get(
-    spreadsheetId=google_sheets_id,
-    majorDimension='ROWS',
-    range='SABANA!A2:V'
-    ).execute()
 
 data_PV[15]=data_PV[15].astype(str)
 data_PV[14]=data_PV[14].astype(str)
