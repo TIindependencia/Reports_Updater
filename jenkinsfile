@@ -8,7 +8,7 @@ pipeline{
             }
         }
 
-        stage('build-Alumaule'){
+        stage('build--Alumaule'){
             steps{
                 sh 'python3 -m BDINFORMEENVENTOSALUMAULE.py'
             }
