@@ -68,38 +68,25 @@ def load_values(df,id):
 def reset_values(id):
     service.spreadsheets().values().clear(spreadsheetId=id, range='Datos!A2:R').execute()
 
-cuentasInds=get_values(indsIdGs,'cuentas!A2')
+def statement(cuentas):
+    cursor.execute("SELECT cast (ACCOUNTNUM as bigint),cast(AMOUNTCURTR as bigint),cast (AMOUNTMSTC as bigint), cast(AMOUNTMSTD as bigint), cast(AMOUNTMSTR as bigint),DOCUMENTCODE, case when convert(varchar (10),DOCUMENTDATE,101) = '01/01/1900' then '' else convert(varchar (10),DOCUMENTDATE,103) end,cast(DUEDATE as date),INVOICE,NAME,POSTINGPROFILE,cast(REPORTINGCURRENCYAMOUNT as bigint),cast (TRANSDATE as date),TRANSTYPE,TXT,VOUCHER,DATAAREAID,CREATED  FROM VENDTRANSREPORTTREASURY WHERE POSTINGPROFILE IN ("+cuentas+") AND DATAAREAID = 'inds' ")
+    Proveedores=cursor.fetchall()
+    Proveedores=pd.DataFrame(np.array(Proveedores))
+    Proveedores[0]=Proveedores[0].astype(str)
+    Proveedores[6]=Proveedores[6].astype(str)
+    Proveedores[7]=Proveedores[7].astype(str)
+    Proveedores[12]=Proveedores[12].astype(str)
 
+    return Proveedores
+
+cuentasInds=get_values(indsIdGs,'cuentas!A2')
+cuentasCrio=get_values(crioIdGS,'cuentas!A2')
+cuentasColb=get_values(colbIdGS,'cuentas!A2')
 
 cursor = conn.cursor()
-cursor.execute("SELECT cast (ACCOUNTNUM as bigint),cast(AMOUNTCURTR as bigint),cast (AMOUNTMSTC as bigint), cast(AMOUNTMSTD as bigint), cast(AMOUNTMSTR as bigint),DOCUMENTCODE, case when convert(varchar (10),DOCUMENTDATE,101) = '01/01/1900' then '' else convert(varchar (10),DOCUMENTDATE,103) end,cast(DUEDATE as date),INVOICE,NAME,POSTINGPROFILE,cast(REPORTINGCURRENCYAMOUNT as bigint),cast (TRANSDATE as date),TRANSTYPE,TXT,VOUCHER,DATAAREAID,CREATED  FROM VENDTRANSREPORTTREASURY WHERE POSTINGPROFILE IN ("+cuentasInds+") AND DATAAREAID = 'inds' ")
-
-ProveedoresInds=cursor.fetchall()
-ProveedoresInds=pd.DataFrame(np.array(ProveedoresInds))
-ProveedoresInds[0]=ProveedoresInds[0].astype(str)
-ProveedoresInds[6]=ProveedoresInds[6].astype(str)
-ProveedoresInds[7]=ProveedoresInds[7].astype(str)
-ProveedoresInds[12]=ProveedoresInds[12].astype(str)
-
-cuentasCrio=get_values(crioIdGS,'cuentas!A2')
-cursor.execute("SELECT cast (ACCOUNTNUM as bigint),cast(AMOUNTCURTR as bigint),cast (AMOUNTMSTC as bigint), cast(AMOUNTMSTD as bigint), cast(AMOUNTMSTR as bigint),DOCUMENTCODE, case when convert(varchar (10),DOCUMENTDATE,101) = '01/01/1900' then '' else convert(varchar (10),DOCUMENTDATE,103) end,cast(DUEDATE as date),INVOICE,NAME,POSTINGPROFILE,cast(REPORTINGCURRENCYAMOUNT as bigint),cast (TRANSDATE as date),TRANSTYPE,TXT,VOUCHER,DATAAREAID,CREATED  FROM VENDTRANSREPORTTREASURY WHERE POSTINGPROFILE IN ("+cuentasCrio+") AND DATAAREAID = 'crio' ")
-
-ProveedoresCrio=cursor.fetchall()
-ProveedoresCrio=pd.DataFrame(np.array(ProveedoresCrio))
-ProveedoresCrio[0]=ProveedoresCrio[0].astype(str)
-ProveedoresCrio[6]=ProveedoresCrio[6].astype(str)
-ProveedoresCrio[7]=ProveedoresCrio[7].astype(str)
-ProveedoresCrio[12]=ProveedoresCrio[12].astype(str)
-
-cuentasColb=get_values(colbIdGS,'cuentas!A2')
-cursor.execute("SELECT cast (ACCOUNTNUM as bigint),cast(AMOUNTCURTR as bigint),cast (AMOUNTMSTC as bigint), cast(AMOUNTMSTD as bigint), cast(AMOUNTMSTR as bigint),DOCUMENTCODE, case when convert(varchar (10),DOCUMENTDATE,101) = '01/01/1900' then '' else convert(varchar (10),DOCUMENTDATE,103) end,cast(DUEDATE as date),INVOICE,NAME,POSTINGPROFILE,cast(REPORTINGCURRENCYAMOUNT as bigint),cast (TRANSDATE as date),TRANSTYPE,TXT,VOUCHER,DATAAREAID,CREATED  FROM VENDTRANSREPORTTREASURY WHERE POSTINGPROFILE IN ("+cuentasColb+") AND DATAAREAID = 'colb' ")
-
-ProveedoresColb=cursor.fetchall()
-ProveedoresColb=pd.DataFrame(np.array(ProveedoresColb))
-ProveedoresColb[0]=ProveedoresColb[0].astype(str)
-ProveedoresColb[6]=ProveedoresColb[6].astype(str)
-ProveedoresColb[7]=ProveedoresColb[7].astype(str)
-ProveedoresColb[12]=ProveedoresColb[12].astype(str)
+ProveedoresInds=statement(cuentasInds)
+ProveedoresCrio=statement(cuentasCrio)
+ProveedoresColb=statement(cuentasColb)
 
 now_utc = datetime.now(timezone('UTC'))
 now = now_utc.astimezone(timezone('America/Santiago'))
