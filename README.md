@@ -9,13 +9,20 @@
 4.Configurar Crontab: 
     crontab -e
               
-    0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/BDINFORMEENVENTOSALUMAULE.py  >> /home/independencia/Escritorio/Reports_Updater/log/Alumaule.log 2>&1
-    0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/BDPostVenta.py  >> /home/independencia/Escritorio/Reports_Updater/log/Postventa.log 2>&1
-    0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/CargaAnticiposEEPP.py  >> /home/independencia/Escritorio/Reports_Updater/log/AnticipoEEPP.log 2>&1
+
+0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/1.-BD_EventosAlumaule.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/BD_EventosAlumaule.log 2>&1
+0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/2.-BD_CargaAnticiposEEPP.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/BD_CargaAnticiposEEPP.log 2>&1
+0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/3.-BD_PostVenta.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/BD_PostVenta.log 2>&1
+0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/4.-UF_Drive.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/UF_Drive.log 2>&1
+0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/5.-BD_CargaProveedores.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/BD_CargaProveedores.log 2>&1
+0 */6 * * * docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/6.-BD_SaldosPorDocumento.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/BD_SaldosPorDocumento.log 2>&1
 
 
-
-
-
+docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/1.-BD_EventosAlumaule.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/BD_EventosAlumaule.log 2>&1
+docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/2.-BD_CargaAnticiposEEPP.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/BD_CargaAnticiposEEPP.log 2>&1
+docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/3.-BD_PostVenta.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/BD_PostVenta.log 2>&1
+docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/4.-UF_Drive.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/UF_Drive.log 2>&1
+docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/5.-BD_CargaProveedores.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/BD_CargaProveedores.log 2>&1
+docker exec -i -u root  reports_updater_container /usr/local/bin/python /app/6.-BD_SaldosPorDocumento.py  >> /home/independencia/Escritorio/proyectos/Reports_Updater/log/BD_SaldosPorDocumento.log 2>&1
 
 
