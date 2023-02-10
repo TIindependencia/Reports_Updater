@@ -101,10 +101,17 @@ ProveedoresColb[6]=ProveedoresColb[6].astype(str)
 ProveedoresColb[7]=ProveedoresColb[7].astype(str)
 ProveedoresColb[12]=ProveedoresColb[12].astype(str)
 
+now_utc = datetime.now(timezone('UTC'))
+now = now_utc.astimezone(timezone('America/Santiago'))
 
-reset_values(indsIdGs)
-load_values(ProveedoresInds,indsIdGs)
-reset_values(crioIdGS)
-load_values(ProveedoresCrio,crioIdGS)
-reset_values(colbIdGS)
-load_values(ProveedoresColb,colbIdGS)
+try:
+    reset_values(indsIdGs)
+    load_values(ProveedoresInds,indsIdGs)
+    reset_values(crioIdGS)
+    load_values(ProveedoresCrio,crioIdGS)
+    reset_values(colbIdGS)
+    load_values(ProveedoresColb,colbIdGS)
+    print("Data Actualizada "+ str(now))
+except Exception as e:
+    print(e)
+    print(now)
