@@ -5,7 +5,7 @@ from Google import create_service
 from datetime import datetime
 from pytz import timezone
 
-DRIVER_NAME ='SQL SERVER'
+DRIVER_NAME ='ODBC Driver 17 for SQL Server'
 SERVER_NAME = '192.168.50.201,1433'
 DATABASE_NAME = 'pv'
 UID='consultapluto'
