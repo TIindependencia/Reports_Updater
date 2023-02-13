@@ -6,7 +6,7 @@ from datetime import datetime
 from pytz import timezone
 
 DRIVER_NAME ='SQL SERVER'
-SERVER_NAME = '192.168.50.201'
+SERVER_NAME = '192.168.50.201,1433'
 DATABASE_NAME = 'pv'
 UID='consultapluto'
 PWD='_pepe@2015'; 
