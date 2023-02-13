@@ -5,11 +5,11 @@ from Google import create_service
 from datetime import datetime
 from pytz import timezone
 
-DRIVER_NAME ='ODBC Driver 17 for SQL Server'
-SERVER_NAME = '192.168.50.201,1433'
+DRIVER_NAME = 'ODBC Driver 17 for SQL Server'
+SERVER_NAME = '192.168.1.31,1433'
 DATABASE_NAME = 'pv'
-UID='consultapluto'
-PWD='_pepe@2015'; 
+UID='google'
+PWD='Pago1010.' 
 
 try:
     conn = pyodbc.connect('DRIVER='+DRIVER_NAME+';SERVER='+SERVER_NAME+';DATABASE='+DATABASE_NAME+';ENCRYPT=no;UID='+UID+';PWD='+ PWD +'')
