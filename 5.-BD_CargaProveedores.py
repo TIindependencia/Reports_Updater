@@ -68,8 +68,8 @@ def load_values(df,id):
 def reset_values(id):
     service.spreadsheets().values().clear(spreadsheetId=id, range='Datos!A2:R').execute()
 
-def statement(cuentas):
-    cursor.execute("SELECT cast (ACCOUNTNUM as bigint),cast(AMOUNTCURTR as bigint),cast (AMOUNTMSTC as bigint), cast(AMOUNTMSTD as bigint), cast(AMOUNTMSTR as bigint),DOCUMENTCODE, case when convert(varchar (10),DOCUMENTDATE,101) = '01/01/1900' then '' else convert(varchar (10),DOCUMENTDATE,103) end,cast(DUEDATE as date),INVOICE,NAME,POSTINGPROFILE,cast(REPORTINGCURRENCYAMOUNT as bigint),cast (TRANSDATE as date),TRANSTYPE,TXT,VOUCHER,DATAAREAID,CREATED  FROM VENDTRANSREPORTTREASURY WHERE POSTINGPROFILE IN ("+cuentas+") AND DATAAREAID = 'inds' ")
+def statement(cuentas,empresa):
+    cursor.execute("SELECT cast (ACCOUNTNUM as bigint),cast(AMOUNTCURTR as bigint),cast (AMOUNTMSTC as bigint), cast(AMOUNTMSTD as bigint), cast(AMOUNTMSTR as bigint),DOCUMENTCODE, case when convert(varchar (10),DOCUMENTDATE,101) = '01/01/1900' then '' else convert(varchar (10),DOCUMENTDATE,103) end,cast(DUEDATE as date),INVOICE,NAME,POSTINGPROFILE,cast(REPORTINGCURRENCYAMOUNT as bigint),cast (TRANSDATE as date),TRANSTYPE,TXT,VOUCHER,DATAAREAID,CREATED  FROM VENDTRANSREPORTTREASURY WHERE POSTINGPROFILE IN ("+cuentas+") AND DATAAREAID = '"+empresa+"' ")
     Proveedores=cursor.fetchall()
     Proveedores=pd.DataFrame(np.array(Proveedores))
     Proveedores[0]=Proveedores[0].astype(str)
@@ -84,9 +84,9 @@ cuentasCrio=get_values(crioIdGS,'cuentas!A2')
 cuentasColb=get_values(colbIdGS,'cuentas!A2')
 
 cursor = conn.cursor()
-ProveedoresInds=statement(cuentasInds)
-ProveedoresCrio=statement(cuentasCrio)
-ProveedoresColb=statement(cuentasColb)
+ProveedoresInds=statement(cuentasInds,'inds')
+ProveedoresCrio=statement(cuentasCrio,'crio')
+ProveedoresColb=statement(cuentasColb,'colb')
 
 now_utc = datetime.now(timezone('UTC'))
 now = now_utc.astimezone(timezone('America/Santiago'))
