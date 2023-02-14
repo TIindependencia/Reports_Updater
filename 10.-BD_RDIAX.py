@@ -71,13 +71,22 @@ Insert rows
 """
 request_body_values = construct_request_body(recordset)
 service.spreadsheets().values().clear(spreadsheetId=google_sheets_id, range='BD2!A2:AC').execute()
-service.spreadsheets().values().update(
-    spreadsheetId=google_sheets_id,
-    valueInputOption='USER_ENTERED',
-    range='BD2!A2:AC',
-    body=request_body_values
-    ).execute()
+now_utc = datetime.now(timezone('UTC'))
+now = now_utc.astimezone(timezone('America/Santiago'))
 
-print('Task is complete')
+try:
+    service.spreadsheets().values().update(
+        spreadsheetId=google_sheets_id,
+        valueInputOption='USER_ENTERED',
+        range='BD2!A2:AC',
+        body=request_body_values
+        ).execute()
+    cursor.close()
+    print('Task is complete')
+    print(now)
+except Exception as e:
+    print(e)
+    print (now)
 
-cursor.close()
+
+
