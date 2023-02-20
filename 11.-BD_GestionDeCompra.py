@@ -106,9 +106,9 @@ now = now_utc.astimezone(timezone('America/Santiago'))
 
 try:
     #inserta Gestion de compra
-    upload_data(Gestion,'BD_GESTION!A2:V')
+    upload_data(Gestion,'BD_GESTION!B2:V')
     #inserta el detalle
-    upload_data(Detalle,'BD_DETALLE!A2:H')
+    upload_data(Detalle,'BD_DETALLE!B2:H')
     cursor.close()
     print(now)
 except Exception as e:
