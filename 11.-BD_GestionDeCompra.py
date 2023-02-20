@@ -62,12 +62,34 @@ def upload_data(data,sheetname):
 
     print(sheetname+' insertado completo')
 
+def getValues(range):
+    array=[]
+    request = service.spreadsheets().values().get(spreadsheetId=google_sheets_id, range=range)
+    response = request.execute()
+    for x in response["values"]:
+        if len(x)!=0:
+            array.append(x[0])
+    return array
+
+def getStatement(array):
+    stmt=''
+    for centro in array:
+        aux="PROJID='"+centro+"' OR "
+        stmt=stmt+aux
+    stmt=stmt[:-3]
+    return stmt
+
+values=getValues('AUX!C2:C')
+where_stmt=getStatement(values)
+
 cursor=conn.cursor()
-cursor.execute('SELECT PROJID AS PROYECTO		,PROJNAME AS NOMBRE_PROYECTO				,ITEMID AS CODIGO_ARTICULO		,ITEMNAME AS NOMBRE_ARTICULO		,UNITID AS UNIDAD		,cast(AMOUNT7 as int) as CANTIDAD_ORIGINAL		,cast(PURCHPRICE as int) as PRECIO_COMPRA		,cast(QTY as int) AS CANTIDAD_MODIFICADA		,cast(PRICE as int) AS UNITARIO_PRESUPUESTADO		,cast(AMOUNT6 as int) AS ORIGINAL		,cast(AMOUNT as int) AS PRESUPUESTO		,cast(PURCHQTY as int) AS CANTIDAD_COMPRA		,cast(INPUTSQTY as int) AS RECIBIDO 		,cast(AMOUNT1 as int) AS COMPRADO		,cast(AMOUNT2 as int) AS DISPONIBLE		,cast(AMOUNT3_5 as int) AS CANTIDAD_POR_COMPRAR		,cast(AMOUNT3 as int) AS POR_COMPRAR		,cast(AMOUNT4 as int)AS PROYECTADO		,cast(AMOUNT5 as int) AS AHORRO_PERDIDA		,CATEGORYID AS CATEGORIA		,CATEGORYNAME1 AS NOMBRE_CATEGORIA 		,DATAAREAID AS EMPRESA  FROM CI_PURCHASEMANAGEMENTLINE ')
+stmt_gestion='SELECT PROJID AS PROYECTO		,PROJNAME AS NOMBRE_PROYECTO				,ITEMID AS CODIGO_ARTICULO		,ITEMNAME AS NOMBRE_ARTICULO		,UNITID AS UNIDAD		,cast(AMOUNT7 as int) as CANTIDAD_ORIGINAL		,cast(PURCHPRICE as int) as PRECIO_COMPRA		,cast(QTY as int) AS CANTIDAD_MODIFICADA		,cast(PRICE as int) AS UNITARIO_PRESUPUESTADO		,cast(AMOUNT6 as int) AS ORIGINAL		,cast(AMOUNT as int) AS PRESUPUESTO		,cast(PURCHQTY as int) AS CANTIDAD_COMPRA		,cast(INPUTSQTY as int) AS RECIBIDO 		,cast(AMOUNT1 as int) AS COMPRADO		,cast(AMOUNT2 as int) AS DISPONIBLE		,cast(AMOUNT3_5 as int) AS CANTIDAD_POR_COMPRAR		,cast(AMOUNT3 as int) AS POR_COMPRAR		,cast(AMOUNT4 as int)AS PROYECTADO		,cast(AMOUNT5 as int) AS AHORRO_PERDIDA		,CATEGORYID AS CATEGORIA		,CATEGORYNAME1 AS NOMBRE_CATEGORIA 		,DATAAREAID AS EMPRESA, ITEMID AS ITEMID  FROM CI_PURCHASEMANAGEMENTLINE WHERE '
+cursor.execute(stmt_gestion+where_stmt)
 data=cursor.fetchall()
 Gestion=pd.DataFrame(np.array(data))
 
-cursor.execute('Select PURCHQTY AS CANTIDAD , RECEIVED AS RECEPCIONADA, LINEAMOUNT AS IMPORTENETO, PURCHID AS ORDENDECOMPRA, PURCHPRICE AS UNITARIO, REMAINPURCHPHYSICAL AS PORRECEPCIONAR, (PURCHPRICE*REMAINPURCHPHYSICAL) PORRECPD,PURCHNAME AS PROVEEDOR FROM PURCHDETAILITEMDRIVE')
+stmt_detalle='Select PURCHQTY AS CANTIDAD , RECEIVED AS RECEPCIONADA, LINEAMOUNT AS IMPORTENETO, PURCHID AS ORDENDECOMPRA, PURCHPRICE AS UNITARIO, REMAINPURCHPHYSICAL AS PORRECEPCIONAR, (PURCHPRICE*REMAINPURCHPHYSICAL) PORRECPD,PURCHNAME AS PROVEEDOR, ITEMID AS ITEMID, PROJID AS COD_PROYECTO FROM PURCHDETAILITEMDRIVE WHERE '
+cursor.execute(stmt_detalle+where_stmt)
 data=cursor.fetchall()
 Detalle=pd.DataFrame(np.array(data))
 
