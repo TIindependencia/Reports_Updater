@@ -4,6 +4,7 @@ import numpy as np
 from Google import create_service
 from datetime import datetime
 from pytz import timezone
+pd.options.mode.chained_assignment = None 
 
 ##conexión a BD
 DRIVER_NAME = 'ODBC Driver 17 for SQL Server'
@@ -95,6 +96,51 @@ stmt_gestion='SELECT PROJID AS PROYECTO		,PROJNAME AS NOMBRE_PROYECTO				,ITEMID
 cursor.execute(stmt_gestion+where_stmt)
 data=cursor.fetchall()
 Gestion=pd.DataFrame(np.array(data))
+
+Gestion[7]=Gestion[7].astype(int)
+Gestion[10]=Gestion[10].astype(int)
+Gestion[11]=Gestion[11].astype(int)
+Gestion[12]=Gestion[12].astype(int)
+Gestion[13]=Gestion[13].astype(int)
+Gestion[14]=Gestion[14].astype(int)
+Gestion[15]=Gestion[15].astype(int)
+Gestion[16]=Gestion[16].astype(int)
+Gestion[17]=Gestion[17].astype(int)
+Gestion[18]=Gestion[18].astype(int)
+
+exceptions=['22SPEBP01','21SVADJ02']
+replace_exceptions=['22SPEBP03','21SVADJ04']
+
+i=0
+while(i<len(exceptions)):
+    Gestion_exception=Gestion.loc[Gestion[0]==exceptions[i]]
+    Gestion_exception=Gestion_exception.replace(exceptions[i],replace_exceptions[i]).reset_index(drop=True)
+    Gestion=Gestion.loc[Gestion[0]!=exceptions[i]].reset_index(drop=True)
+    if(len(Gestion_exception)>0):
+        
+        k=0
+        count=0
+        while(k<len(Gestion)):
+            j=0
+            while(j<len(Gestion_exception)):
+                if(Gestion[0][k]==Gestion_exception[0][j] and Gestion[1][k]==Gestion_exception[1][j] and Gestion[2][k]==Gestion_exception[2][j] and Gestion[3][k]==Gestion_exception[3][j]):
+                    count=count+1
+                    Gestion[7][k]=int(Gestion[7][k]) + int(Gestion_exception[7][j])
+                    Gestion[8][k]=int(Gestion[8][k]) + int(Gestion_exception[8][j])
+                    Gestion[10][k]=int(Gestion[10][k]) + int(Gestion_exception[10][j])
+                    Gestion[11][k]=int(Gestion[11][k]) + int(Gestion_exception[11][j])
+                    Gestion[12][k]=int(Gestion[12][k]) + int(Gestion_exception[12][j])
+                    Gestion[13][k]=int(Gestion[11][k]) + int(Gestion_exception[13][j])
+                    Gestion[14][k]=int(Gestion[14][k]) + int(Gestion_exception[14][j])
+                    Gestion[15][k]=int(Gestion[15][k]) + int(Gestion_exception[15][j])
+                    Gestion[16][k]=int(Gestion[16][k]) + int(Gestion_exception[16][j])
+                    Gestion[17][k]=int(Gestion[17][k]) + int(Gestion_exception[17][j])
+                    Gestion[18][k]=int(Gestion[18][k]) + int(Gestion_exception[18][j])
+                    Gestion_exception=Gestion_exception.drop(Gestion_exception.index[j]).reset_index(drop=True)               
+                j=j+1    
+            k=k+1
+    Gestion=pd.concat([Gestion, Gestion_exception]).reset_index(drop=True)
+    i=i+1
 
 stmt_detalle='Select PURCHQTY AS CANTIDAD , RECEIVED AS RECEPCIONADA, LINEAMOUNT AS IMPORTENETO, PURCHID AS ORDENDECOMPRA, PURCHPRICE AS UNITARIO, REMAINPURCHPHYSICAL AS PORRECEPCIONAR, (PURCHPRICE*REMAINPURCHPHYSICAL) PORRECPD,PURCHNAME AS PROVEEDOR, ITEMID AS ITEMID, PROJID AS COD_PROYECTO FROM PURCHDETAILITEMDRIVE WHERE '
 cursor.execute(stmt_detalle+where_stmt)
